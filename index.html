@@ -40,7 +40,6 @@
             color: white;
             padding: 40px 20px 60px;
             text-align: center;
-            position: relative;
         }
 
         .header h1 {
@@ -171,8 +170,6 @@
             flex-direction: column;
             justify-content: space-between;
             transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-            overflow: hidden;
         }
 
         .doc-card:hover {
@@ -303,16 +300,6 @@
             color: #cbd5e1;
             margin-bottom: 12px;
         }
-
-        .empty-state h3 {
-            color: var(--text-main);
-            margin-bottom: 4px;
-        }
-
-        .empty-state p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
     </style>
 </head>
 <body>
@@ -330,9 +317,7 @@
             </div>
             <select id="categoryFilter" class="category-select">
                 <option value="all">ทุกหมวดหมู่</option>
-                <option value="ทั่วไป">เอกสารทั่วไป</option>
-                <option value="รายงาน">รายงานประจำปี</option>
-                <option value="แบบฟอร์ม">แบบฟอร์มคำขอ</option>
+                <option value="บทเรียน">บทเรียน (Slides)</option>
             </select>
             <div class="view-toggle">
                 <button class="view-btn active" id="gridViewBtn" title="มุมมองการ์ด"><i class="fa-solid fa-border-all"></i></button>
@@ -354,29 +339,19 @@
     </div>
 
     <script>
-        // รายการไฟล์ PDF ทั้งหมดในโฟลเดอร์ doc_pdf
-        // แก้ไขชื่อไฟล์ ขนาด และหมวดหมู่ตรงนี้ได้ตามต้องการ
+        // รายการไฟล์ตรงกับในโฟลเดอร์ doc_pdf ของคุณ
         const documents = [
             {
-                title: "คู่มือการใช้งานระบบ.pdf",
-                filename: "manual.pdf",
-                category: "ทั่วไป",
-                size: "2.4 MB",
-                date: "2026-10-20"
+                title: "Slides Unit 1: Welcome",
+                filename: "Slides_Unit_1_Welcome.pdf",
+                category: "บทเรียน",
+                size: "PDF File"
             },
             {
-                title: "แบบฟอร์มคำขอทั่วไป.pdf",
-                filename: "form-01.pdf",
-                category: "แบบฟอร์ม",
-                size: "1.1 MB",
-                date: "2026-10-18"
-            },
-            {
-                title: "รายงานประจำปี 2026.pdf",
-                filename: "report-2026.pdf",
-                category: "รายงาน",
-                size: "5.8 MB",
-                date: "2026-10-15"
+                title: "Slides Unit 2: People",
+                filename: "Slides_Unit_2_People.pdf",
+                category: "บทเรียน",
+                size: "PDF File"
             }
         ];
 
@@ -412,7 +387,6 @@
                             <div class="doc-title" title="${doc.title}">${doc.title}</div>
                             <div class="doc-meta">
                                 <span class="badge">${doc.category}</span>
-                                <span><i class="fa-regular fa-hard-drive"></i> ${doc.size}</span>
                             </div>
                         </div>
                     </div>
@@ -457,7 +431,6 @@
             gridViewBtn.classList.remove('active');
         });
 
-        // แสดงผลไฟล์เริ่มต้น
         renderDocuments(documents);
     </script>
 </body>
