@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คลังเอกสาร PDF</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        header h1 {
+            color: #1a365d;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+        header p {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+        /* รูปแบบหมวดหมู่ */
+        .category-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .category-title {
+            font-size: 1.2rem;
+            color: #2b6cb0;
+            border-bottom: 2px solid #ebf8ff;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        /* รายการเอกสาร */
+        .pdf-list {
+            list-style: none;
+        }
+        .pdf-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #edf2f7;
+        }
+        .pdf-item:last-child {
+            border-bottom: none;
+        }
+        .pdf-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .pdf-icon {
+            color: #e53e3e;
+            font-size: 1.2rem;
+        }
+        .pdf-name {
+            font-weight: 500;
+            color: #2d3748;
+        }
+        .pdf-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .btn {
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .btn-open {
+            background-color: #3182ce;
+            color: white;
+        }
+        .btn-open:hover {
+            background-color: #2b6cb0;
+        }
+        .btn-download {
+            background-color: #edf2f7;
+            color: #4a5568;
+        }
+        .btn-download:hover {
+            background-color: #e2e8f0;
+        }
+        @media (max-width: 600px) {
+            .pdf-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .pdf-actions {
+                width: 100%;
+            }
+            .btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>📂 ศูนย์รวมเอกสาร PDF</h1>
+            <p>เลือกดูและดาวน์โหลดเอกสารตามหมวดหมู่ด้านล่าง</p>
+        </header>
+
+        <!-- หมวดหมู่ที่ 1 -->
+        <div class="category-card">
+            <h2 class="category-title">📌 หมวดหมู่: เอกสารทั่วไป</h2>
+            <ul class="pdf-list">
+                <li class="pdf-item">
+                    <div class="pdf-info">
+                        <span class="pdf-icon">📄</span>
+                        <span class="pdf-name">คู่มือการใช้งานระบบ.pdf</span>
+                    </div>
+                    <div class="pdf-actions">
+                        <!-- เปลี่ยน 'docs/manual.pdf' เป็นพาธ/ชื่อไฟล์จริงของคุณ -->
+                        <a href="docs/manual.pdf" target="_blank" class="btn btn-open">เปิดดู</a>
+                        <a href="docs/manual.pdf" download class="btn btn-download">ดาวน์โหลด</a>
+                    </div>
+                </li>
+                <li class="pdf-item">
+                    <div class="pdf-info">
+                        <span class="pdf-icon">📄</span>
+                        <span class="pdf-name">เเบบฟอร์มคำขอทั่วไป.pdf</span>
+                    </div>
+                    <div class="pdf-actions">
+                        <a href="docs/form-01.pdf" target="_blank" class="btn btn-open">เปิดดู</a>
+                        <a href="docs/form-01.pdf" download class="btn btn-download">ดาวน์โหลด</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- หมวดหมู่ที่ 2 -->
+        <div class="category-card">
+            <h2 class="category-title">📊 หมวดหมู่: รายงานและประกาศ</h2>
+            <ul class="pdf-list">
+                <li class="pdf-item">
+                    <div class="pdf-info">
+                        <span class="pdf-icon">📄</span>
+                        <span class="pdf-name">รายงานประจำปี 2026.pdf</span>
+                    </div>
+                    <div class="pdf-actions">
+                        <a href="docs/report-2026.pdf" target="_blank" class="btn btn-open">เปิดดู</a>
+                        <a href="docs/report-2026.pdf" download class="btn btn-download">ดาวน์โหลด</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+</body>
+</html>
