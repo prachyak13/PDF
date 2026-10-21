@@ -3,181 +3,462 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>คลังเอกสาร PDF</title>
+    <title>คลังเอกสาร PDF ออนไลน์</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: 'Sarabun', sans-serif;
         }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f4f6f9;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding-bottom: 60px;
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        header {
+
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: 40px 20px 60px;
             text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: relative;
         }
-        header h1 {
-            color: #1a365d;
-            font-size: 1.8rem;
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
             margin-bottom: 8px;
-        }
-        header p {
-            color: #718096;
-            font-size: 0.95rem;
-        }
-        /* รูปแบบหมวดหมู่ */
-        .category-card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .category-title {
-            font-size: 1.2rem;
-            color: #2b6cb0;
-            border-bottom: 2px solid #ebf8ff;
-            padding-bottom: 8px;
-            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            gap: 12px;
         }
-        /* รายการเอกสาร */
-        .pdf-list {
-            list-style: none;
+
+        .header p {
+            color: #94a3b8;
+            font-size: 0.95rem;
         }
-        .pdf-item {
+
+        .main-container {
+            max-width: 1000px;
+            margin: -30px auto 0;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .search-wrapper {
+            flex: 1;
+            min-width: 240px;
+            position: relative;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 14px 10px 40px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .category-select {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            background-color: white;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+
+        .view-toggle {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 8px;
+            gap: 4px;
+        }
+
+        .view-btn {
+            border: none;
+            background: transparent;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .view-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stats-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #edf2f7;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
         }
-        .pdf-item:last-child {
-            border-bottom: none;
+
+        .document-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            transition: all 0.3s;
         }
-        .pdf-info {
+
+        .document-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+
+        .doc-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .doc-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: #cbd5e1;
+        }
+
+        .document-grid.list-view .doc-card {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .doc-header {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .document-grid.list-view .doc-header {
+            margin-bottom: 0;
+            flex: 1;
+            align-items: center;
+        }
+
+        .pdf-icon {
+            width: 44px;
+            height: 44px;
+            background-color: #fef2f2;
+            color: #ef4444;
+            border-radius: 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
         }
-        .pdf-icon {
-            color: #e53e3e;
-            font-size: 1.2rem;
+
+        .doc-info {
+            flex: 1;
+            overflow: hidden;
         }
-        .pdf-name {
+
+        .doc-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .doc-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 12px;
+        }
+
+        .badge {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
             font-weight: 500;
-            color: #2d3748;
         }
-        .pdf-actions {
+
+        .doc-actions {
             display: flex;
             gap: 8px;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 14px;
         }
+
+        .document-grid.list-view .doc-actions {
+            border-top: none;
+            padding-top: 0;
+        }
+
         .btn {
-            padding: 6px 14px;
-            font-size: 0.85rem;
+            flex: 1;
+            padding: 8px 12px;
             border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
             text-decoration: none;
-            transition: background-color 0.2s;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: background 0.2s;
         }
-        .btn-open {
-            background-color: #3182ce;
-            color: white;
+
+        .btn-view {
+            background-color: var(--primary-light);
+            color: var(--primary);
         }
-        .btn-open:hover {
-            background-color: #2b6cb0;
+
+        .btn-view:hover {
+            background-color: #dbeafe;
         }
+
         .btn-download {
-            background-color: #edf2f7;
-            color: #4a5568;
+            background-color: #f1f5f9;
+            color: #475569;
         }
+
         .btn-download:hover {
             background-color: #e2e8f0;
         }
-        @media (max-width: 600px) {
-            .pdf-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-            .pdf-actions {
-                width: 100%;
-            }
-            .btn {
-                flex: 1;
-                text-align: center;
-            }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: var(--radius);
+            border: 1px dashed var(--border);
+            display: none;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>📂 ศูนย์รวมเอกสาร PDF</h1>
-            <p>เลือกดูและดาวน์โหลดเอกสารตามหมวดหมู่ด้านล่าง</p>
-        </header>
-
-        <!-- หมวดหมู่ที่ 1 -->
-        <div class="category-card">
-            <h2 class="category-title">📌 หมวดหมู่: เอกสารทั่วไป</h2>
-            <ul class="pdf-list">
-                <li class="pdf-item">
-                    <div class="pdf-info">
-                        <span class="pdf-icon">📄</span>
-                        <span class="pdf-name">คู่มือการใช้งานระบบ.pdf</span>
-                    </div>
-                    <div class="pdf-actions">
-                        <!-- เปลี่ยน 'docs/manual.pdf' เป็นพาธ/ชื่อไฟล์จริงของคุณ -->
-                        <a href="docs/manual.pdf" target="_blank" class="btn btn-open">เปิดดู</a>
-                        <a href="docs/manual.pdf" download class="btn btn-download">ดาวน์โหลด</a>
-                    </div>
-                </li>
-                <li class="pdf-item">
-                    <div class="pdf-info">
-                        <span class="pdf-icon">📄</span>
-                        <span class="pdf-name">เเบบฟอร์มคำขอทั่วไป.pdf</span>
-                    </div>
-                    <div class="pdf-actions">
-                        <a href="docs/form-01.pdf" target="_blank" class="btn btn-open">เปิดดู</a>
-                        <a href="docs/form-01.pdf" download class="btn btn-download">ดาวน์โหลด</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <!-- หมวดหมู่ที่ 2 -->
-        <div class="category-card">
-            <h2 class="category-title">📊 หมวดหมู่: รายงานและประกาศ</h2>
-            <ul class="pdf-list">
-                <li class="pdf-item">
-                    <div class="pdf-info">
-                        <span class="pdf-icon">📄</span>
-                        <span class="pdf-name">รายงานประจำปี 2026.pdf</span>
-                    </div>
-                    <div class="pdf-actions">
-                        <a href="docs/report-2026.pdf" target="_blank" class="btn btn-open">เปิดดู</a>
-                        <a href="docs/report-2026.pdf" download class="btn btn-download">ดาวน์โหลด</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
+    <div class="header">
+        <h1><i class="fa-solid fa-folder-open"></i> คลังเอกสาร PDF</h1>
+        <p>ระบบค้นหาและดาวน์โหลดเอกสารจากโฟลเดอร์ doc_pdf</p>
     </div>
 
+    <div class="main-container">
+        <div class="search-card">
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="พิมพ์ชื่อเอกสารเพื่อค้นหา...">
+            </div>
+            <select id="categoryFilter" class="category-select">
+                <option value="all">ทุกหมวดหมู่</option>
+                <option value="ทั่วไป">เอกสารทั่วไป</option>
+                <option value="รายงาน">รายงานประจำปี</option>
+                <option value="แบบฟอร์ม">แบบฟอร์มคำขอ</option>
+            </select>
+            <div class="view-toggle">
+                <button class="view-btn active" id="gridViewBtn" title="มุมมองการ์ด"><i class="fa-solid fa-border-all"></i></button>
+                <button class="view-btn" id="listViewBtn" title="มุมมองรายการ"><i class="fa-solid fa-list"></i></button>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <span>พบเอกสารทั้งหมด <strong id="docCount" style="color: var(--primary);">0</strong> รายการ</span>
+        </div>
+
+        <div class="document-grid" id="documentGrid"></div>
+
+        <div class="empty-state" id="emptyState">
+            <i class="fa-regular fa-folder-open"></i>
+            <h3>ไม่พบเอกสารที่คุณค้นหา</h3>
+            <p>ลองเปลี่ยนคำค้นหาหรือตัวกรองหมวดหมู่ใหม่อีกครั้ง</p>
+        </div>
+    </div>
+
+    <script>
+        // รายการไฟล์ PDF ทั้งหมดในโฟลเดอร์ doc_pdf
+        // แก้ไขชื่อไฟล์ ขนาด และหมวดหมู่ตรงนี้ได้ตามต้องการ
+        const documents = [
+            {
+                title: "คู่มือการใช้งานระบบ.pdf",
+                filename: "manual.pdf",
+                category: "ทั่วไป",
+                size: "2.4 MB",
+                date: "2026-10-20"
+            },
+            {
+                title: "แบบฟอร์มคำขอทั่วไป.pdf",
+                filename: "form-01.pdf",
+                category: "แบบฟอร์ม",
+                size: "1.1 MB",
+                date: "2026-10-18"
+            },
+            {
+                title: "รายงานประจำปี 2026.pdf",
+                filename: "report-2026.pdf",
+                category: "รายงาน",
+                size: "5.8 MB",
+                date: "2026-10-15"
+            }
+        ];
+
+        const documentGrid = document.getElementById('documentGrid');
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const docCount = document.getElementById('docCount');
+        const emptyState = document.getElementById('emptyState');
+        const gridViewBtn = document.getElementById('gridViewBtn');
+        const listViewBtn = document.getElementById('listViewBtn');
+
+        function renderDocuments(docs) {
+            documentGrid.innerHTML = '';
+            docCount.textContent = docs.length;
+
+            if (docs.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            } else {
+                emptyState.style.display = 'none';
+            }
+
+            docs.forEach(doc => {
+                const filePath = `doc_pdf/${doc.filename}`;
+                const card = document.createElement('div');
+                card.className = 'doc-card';
+                card.innerHTML = `
+                    <div class="doc-header">
+                        <div class="pdf-icon">
+                            <i class="fa-solid fa-file-pdf"></i>
+                        </div>
+                        <div class="doc-info">
+                            <div class="doc-title" title="${doc.title}">${doc.title}</div>
+                            <div class="doc-meta">
+                                <span class="badge">${doc.category}</span>
+                                <span><i class="fa-regular fa-hard-drive"></i> ${doc.size}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="doc-actions">
+                        <a href="${filePath}" target="_blank" class="btn btn-view">
+                            <i class="fa-regular fa-eye"></i> เปิดดู
+                        </a>
+                        <a href="${filePath}" download class="btn btn-download">
+                            <i class="fa-solid fa-download"></i> โหลด
+                        </a>
+                    </div>
+                `;
+                documentGrid.appendChild(card);
+            });
+        }
+
+        function filterDocs() {
+            const query = searchInput.value.toLowerCase().trim();
+            const cat = categoryFilter.value;
+
+            const filtered = documents.filter(doc => {
+                const matchQuery = doc.title.toLowerCase().includes(query) || doc.filename.toLowerCase().includes(query);
+                const matchCat = cat === 'all' || doc.category === cat;
+                return matchQuery && matchCat;
+            });
+
+            renderDocuments(filtered);
+        }
+
+        searchInput.addEventListener('input', filterDocs);
+        categoryFilter.addEventListener('change', filterDocs);
+
+        gridViewBtn.addEventListener('click', () => {
+            documentGrid.classList.remove('list-view');
+            gridViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
+        });
+
+        listViewBtn.addEventListener('click', () => {
+            documentGrid.classList.add('list-view');
+            listViewBtn.classList.add('active');
+            gridViewBtn.classList.remove('active');
+        });
+
+        // แสดงผลไฟล์เริ่มต้น
+        renderDocuments(documents);
+    </script>
 </body>
 </html>
